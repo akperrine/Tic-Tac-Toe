@@ -15,7 +15,7 @@ body {
 }
 
 nav {
-  position: absolute;
+  /* position: absolute; */
   display: flex;
   justify-content: center;
   top: 0rem;
@@ -46,8 +46,8 @@ nav ul {
   height: 100%;
   /* grid-gap: 3px; */
 
-  height: 45rem;
-  width: 45rem;
+  height: 40rem;
+  width: 40rem;
 }
 
 .grid-box > div {
@@ -72,4 +72,8 @@ nav ul {
 
 .is-o {
   color: rgb(50, 206, 245);
+}
+
+.hidden {
+  opacity: 0;
 }
