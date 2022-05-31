@@ -2,9 +2,11 @@ const board = document.querySelector(".grid-box");
 const boardSquare = document.querySelectorAll(".square");
 const cellElements = document.querySelectorAll("data-cell");
 const btnRestart = document.querySelector(".btn-restart");
+const winnerDisplay = document.querySelector(".winner");
 
-const player1 = true;
-const gameOver = false;
+let playerX = true;
+let currentPlayer;
+let gameOver = false;
 let win = false;
 let counter = 1;
 
@@ -24,22 +26,33 @@ const winMessage = function () {
   return `Player ${currentPlayer} wins!`;
 };
 
-const tieMessage = function () {
-  return `It's a tie`;
+const switchPlayer = function () {
+  console.log(playerX);
+  console.log(currentPlayer, "curr");
+  const switchBool = !playerX;
+  if (playerX) {
+    playerX = switchBool;
+    return (currentPlayer = "Player X");
+  } else {
+    playerX = switchBool;
+    return (currentPlayer = "Player O");
+  }
 };
 
 const placeTic = function (e) {
+  console.log(switchPlayer());
+
   const cell = e.target;
   const index = cell.getAttribute("data-cell-index");
   if (cell.textContent === "") {
     if (counter % 2 === 0 && cell.textContent === "") {
-      tic = "X";
+      tic = "O";
       cell.classList.add("is-x");
       cell.classList.remove("is-o");
       gameState[index] = tic;
       counter++;
     } else if (counter % 2 !== 0 && cell.textContent === "") {
-      tic = "O";
+      tic = "X";
       cell.classList.add("is-o");
       cell.classList.remove("is-x");
       gameState[index] = tic;
@@ -49,32 +62,40 @@ const placeTic = function (e) {
     }
     cell.textContent = tic;
   }
-  checkWin();
-};
 
-const checkWin = function () {
-  for (let i = 0; i < gameState.length - 1; i++) {
-    const winCondition = winningConditions[i];
-    let a = gameState[winCondition[0]];
-    let b = gameState[winCondition[1]];
-    let c = gameState[winCondition[2]];
-    if (a === "" || b === "" || c === "") {
-      continue;
+  const checkWin = function () {
+    for (let i = 0; i < gameState.length - 1; i++) {
+      const winCondition = winningConditions[i];
+      let a = gameState[winCondition[0]];
+      let b = gameState[winCondition[1]];
+      let c = gameState[winCondition[2]];
+      if (a === "" || b === "" || c === "") {
+        continue;
+      }
+      if (a === b && b === c) {
+        winnerDisplay.textContent = `${currentPlayer} Wins!`;
+        winnerDisplay.classList.remove("hidden");
+        console.log(`${currentPlayer} Wins!`);
+        return board.classList.add("hidden");
+      }
     }
-    if (a === b && b === c) {
-      console.log("You win");
-    }
-  }
+  };
+
+  checkWin();
 };
 
 const restartGame = function () {
   counter = 1;
+  playerX = true;
+  gameOver = false;
+  win = false;
   boardSquare.forEach((square) => {
     return (square.textContent = "");
   });
   gameState = ["", "", "", "", "", "", "", "", ""];
+  board.classList.remove("hidden");
+  winnerDisplay.classList.add("hidden");
 };
 
-// board.addEventListener("click", handleCellClick);
 board.addEventListener("click", placeTic);
 btnRestart.addEventListener("click", restartGame);
