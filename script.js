@@ -40,8 +40,6 @@ const switchPlayer = function () {
 };
 
 const placeTic = function (e) {
-  console.log(switchPlayer());
-
   const cell = e.target;
   const index = cell.getAttribute("data-cell-index");
   if (cell.textContent === "") {
