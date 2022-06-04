@@ -27,15 +27,15 @@ const winMessage = function () {
 };
 
 const switchPlayer = function () {
-  console.log(playerX);
-  console.log(currentPlayer, "curr");
-  const switchBool = !playerX;
-  if (playerX) {
-    playerX = switchBool;
-    return (currentPlayer = "Player X");
-  } else {
-    playerX = switchBool;
-    return (currentPlayer = "Player O");
+  while (!gameOver) {
+    const switchBool = !playerX;
+    if (playerX) {
+      playerX = switchBool;
+      return (currentPlayer = "Player X");
+    } else {
+      playerX = switchBool;
+      return (currentPlayer = "Player O");
+    }
   }
 };
 
@@ -59,6 +59,7 @@ const placeTic = function (e) {
       counter = counter;
     }
     cell.textContent = tic;
+    console.log(gameOver);
   }
 
   const checkWin = function () {
@@ -74,6 +75,7 @@ const placeTic = function (e) {
         winnerDisplay.textContent = `${currentPlayer} Wins!`;
         winnerDisplay.classList.remove("hidden");
         console.log(`${currentPlayer} Wins!`);
+        gameOver = true;
         return board.classList.add("hidden");
       }
     }
@@ -95,5 +97,6 @@ const restartGame = function () {
   winnerDisplay.classList.add("hidden");
 };
 
-board.addEventListener("click", placeTic);
 btnRestart.addEventListener("click", restartGame);
+board.addEventListener("click", switchPlayer);
+board.addEventListener("click", placeTic);
